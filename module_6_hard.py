@@ -49,7 +49,11 @@ class Circle(Figure):
 
     def __init__(self, color: tuple[int, int, int], side):
         super().__init__(color, side)
-        self.__radius = side / (2 * math.pi)
+        self.__radius = self.get_sides()[0] / (2 * math.pi)
+
+    def set_sides(self, *new_sides):
+        super().set_sides(*new_sides)
+        self.__radius = self.get_sides()[0] / (2 * math.pi)
 
     def get_square(self):
         return math.pi * (self.__radius ** 2)
