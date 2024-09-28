@@ -5,8 +5,8 @@ class Figure:
     sides_count = 0
 
     def __init__(self, color=(0, 0, 0), *sides):
-        self.__sides = list(sides)
-        self.__color = list(color)
+        self.__sides = list(sides) if len(sides) == self.sides_count else [1] * self.sides_count
+        self.__color = list(color) if self.__is_valid_color(*color) else [0,0,0]
         self.filled = False
 
     def get_color(self):
@@ -14,7 +14,7 @@ class Figure:
 
     def __is_valid_color(self, r, g, b):
         if isinstance(r, int) and isinstance(g, int) and isinstance(b, int):
-            if r in range(0, 255) and g in range(0, 255) and b in range(0, 255):
+            if r in range(0, 256) and g in range(0, 256) and b in range(0, 256):
                 return True
             return False
         return False
@@ -47,8 +47,8 @@ class Figure:
 class Circle(Figure):
     sides_count = 1
 
-    def __init__(self, color: tuple[int, int, int], side):
-        super().__init__(color, side)
+    def __init__(self, color: tuple[int, int, int], *side):
+        super().__init__(color, *side)
         self.__radius = self.get_sides()[0] / (2 * math.pi)
 
     def set_sides(self, *new_sides):
@@ -71,9 +71,9 @@ class Triangle(Figure):
 class Cube(Figure):
     sides_count = 12
 
-    def __init__(self, color: tuple[int, int, int], side: int):
-        super().__init__(color, side)
-        self.__sides = [side] * self.sides_count
+    def __init__(self, color=(0, 0, 0), *sides):
+        super().__init__(color, *sides)
+        self.__sides = list(sides) * self.sides_count if len(sides) == 1 else [1] * self.sides_count
 
     def get_sides(self):
         return self.__sides
@@ -88,6 +88,7 @@ class Cube(Figure):
 
 
 circle1 = Circle((200, 200, 100), 10)  # (Цвет, стороны)
+#print(circle1.get_sides())
 cube1 = Cube((222, 35, 130), 6)
 triangle1 = Triangle((100,150,200), 5,6,7)
 
@@ -101,11 +102,11 @@ print(triangle1.get_color())
 
 # Проверка на изменение сторон:
 cube1.set_sides(5, 3, 12, 4, 5)  # Не изменится
-print(cube1.get_sides())
+print(f'Стороны куба: {cube1.get_sides()}')
 circle1.set_sides(15)  # Изменится
-print(circle1.get_sides())
+print(f'Стороны круга: {circle1.get_sides()}')
 triangle1.set_sides(3,5,7,9)  # Не изменится
-print(triangle1.get_sides())
+print(f'Стороны треугольника: {triangle1.get_sides()}')
 
 # Проверка периметра фигур:
 print(f'Периметр круга: {len(circle1)}')
@@ -113,10 +114,10 @@ print(f'Периметр куба: {len(cube1)}')
 print(f'Периметр треугольника: {len(triangle1)}')
 
 # Проверка объёма (куба):
-print(cube1.get_volume())
+print(f'Объем куба: {cube1.get_volume()}')
 
 # Проверка площадь (треугольника):
-print(triangle1.get_square())
+print(f'Площадь треугольника: {triangle1.get_square()}')
 
 # Проверка площадь (круга):
-print(circle1.get_square())
+print(f'Площадь круга: {circle1.get_square()}')
